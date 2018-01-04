@@ -1,0 +1,29 @@
+<?php
+
+/**
+ * @file
+ * Contains devel_codemirror.module.
+ */
+
+use Drupal\Core\Form\FormStateInterface;
+
+/**
+ * Implements hook_form_FORM_ID_alter().
+ */
+function devel_codemirror_form_devel_execute_form_alter(&$form, FormStateInterface $form_state) {
+  $settings = \Drupal::config('devel_codemirror.settings');
+  $form['execute']['code']['#attached']['library'][] = 'devel_codemirror/codemirror';
+  $form['execute']['code']['#attached']['library'][] = 'devel_codemirror/devel';
+  $form['execute']['code']['#attached']['drupalSettings']['devel']['codemirror']['theme'] = $settings->get('theme');
+  $form['execute']['code']['#attached']['drupalSettings']['devel']['codemirror']['lineNumbers'] = (bool) $settings->get('line_number');
+}
+
+/**
+ * Implements hook_library_info_alter().
+ */
+function devel_codemirror_library_info_alter(&$libraries, $extension) {
+  if ($extension == 'devel_codemirror' && isset($libraries['codemirror'])) {
+    $settings = \Drupal::config('devel_codemirror.settings');
+    $libraries['codemirror']['css']['theme']['codemirror/theme/' . $settings->get('theme') . '.css'] = [];
+  }
+}
