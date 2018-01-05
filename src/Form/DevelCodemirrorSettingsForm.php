@@ -65,6 +65,8 @@ class DevelCodemirrorSettingsForm extends ConfigFormBase {
   ];
 
   /**
+   * The cache collector service.
+   *
    * @var \Drupal\Core\Cache\CacheCollectorInterface
    */
   protected $cacheCollector;
@@ -75,6 +77,7 @@ class DevelCodemirrorSettingsForm extends ConfigFormBase {
    * @param \Drupal\Core\Config\ConfigFactoryInterface $config_factory
    *   The factory for configuration objects.
    * @param \Drupal\Core\Cache\CacheCollectorInterface $cache_collector
+   *   The cache collector service.
    */
   public function __construct(ConfigFactoryInterface $config_factory, CacheCollectorInterface $cache_collector) {
     parent::__construct($config_factory);
