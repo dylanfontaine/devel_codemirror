@@ -7,7 +7,6 @@ codemirror:
     gpl-compatible: true
   js:
     codemirror/lib/codemirror.js: {}
-    codemirror/addon/edit/matchbrackets.js: {}
     codemirror/mode/clike/clike.js: {}
     codemirror/mode/php/php.js: {}
   css:

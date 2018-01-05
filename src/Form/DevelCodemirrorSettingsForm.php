@@ -2,8 +2,11 @@
 
 namespace Drupal\devel_codemirror\Form;
 
+use Drupal\Core\Cache\CacheCollectorInterface;
+use Drupal\Core\Config\ConfigFactoryInterface;
 use Drupal\Core\Form\ConfigFormBase;
 use Drupal\Core\Form\FormStateInterface;
+use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
  * Class DevelCodemirrorSettingsForm.
@@ -62,12 +65,31 @@ class DevelCodemirrorSettingsForm extends ConfigFormBase {
   ];
 
   /**
+   * @var \Drupal\Core\Cache\CacheCollectorInterface
+   */
+  protected $cacheCollector;
+
+  /**
+   * Constructs a DevelCodemirrorSettingsForm object.
+   *
+   * @param \Drupal\Core\Config\ConfigFactoryInterface $config_factory
+   *   The factory for configuration objects.
+   * @param \Drupal\Core\Cache\CacheCollectorInterface $cache_collector
+   */
+  public function __construct(ConfigFactoryInterface $config_factory, CacheCollectorInterface $cache_collector) {
+    parent::__construct($config_factory);
+
+    $this->cacheCollector = $cache_collector;
+  }
+
+  /**
    * {@inheritdoc}
    */
-  protected function getEditableConfigNames() {
-    return [
-      'devel_codemirror.settings',
-    ];
+  public static function create(ContainerInterface $container) {
+    return new static(
+      $container->get('config.factory'),
+      $container->get('library.discovery.collector')
+    );
   }
 
   /**
@@ -85,14 +107,39 @@ class DevelCodemirrorSettingsForm extends ConfigFormBase {
     $form['theme'] = [
       '#type' => 'select',
       '#title' => $this->t('Theme'),
+      '#description' => $this->t('The theme to style the editor with.'),
       '#options' => self::THEMES,
       '#required' => TRUE,
       '#default_value' => $config->get('theme'),
     ];
-    $form['line_number'] = [
+    $form['lineWrapping'] = [
+      '#type' => 'checkbox',
+      '#title' => $this->t('Line wrapping'),
+      '#description' => $this->t('Whether CodeMirror should scroll or wrap for long lines.'),
+      '#default_value' => $config->get('lineWrapping'),
+    ];
+    $form['lineNumbers'] = [
       '#type' => 'checkbox',
       '#title' => $this->t('Line number'),
-      '#default_value' => $config->get('line_number'),
+      '#description' => $this->t('Whether to show line numbers to the left of the editor.'),
+      '#default_value' => $config->get('lineNumbers'),
+    ];
+    $form['matchBrackets'] = [
+      '#type' => 'checkbox',
+      '#title' => $this->t('Match brackets'),
+      '#description' => $this->t('When set to true or, causes matching brackets to be highlighted whenever the cursor is next to them.'),
+      '#default_value' => $config->get('matchBrackets'),
+    ];
+    $form['autoCloseBrackets'] = [
+      '#type' => 'checkbox',
+      '#title' => $this->t('Auto close brackets'),
+      '#description' => $this->t('Auto-close brackets and quotes when typed.'),
+      '#default_value' => $config->get('autoCloseBrackets'),
+    ];
+    $form['styleActiveLine'] = [
+      '#type' => 'checkbox',
+      '#title' => $this->t('Style active line'),
+      '#default_value' => $config->get('styleActiveLine'),
     ];
     return parent::buildForm($form, $form_state);
   }
@@ -103,10 +150,22 @@ class DevelCodemirrorSettingsForm extends ConfigFormBase {
   public function submitForm(array &$form, FormStateInterface $form_state) {
     parent::submitForm($form, $form_state);
 
+    $form_state->cleanValues();
+
     $this->config('devel_codemirror.settings')
-      ->set('theme', $form_state->getValue('theme'))
-      ->set('line_number', $form_state->getValue('line_number'))
+      ->setData($form_state->getValues())
       ->save();
+
+    $this->cacheCollector->clear();
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  protected function getEditableConfigNames() {
+    return [
+      'devel_codemirror.settings',
+    ];
   }
 
 }
