@@ -5,12 +5,17 @@
   "keywords": ["Drupal"],
   "license": "GPL-2.0+",
   "homepage": "https://www.drupal.org/project/devel_codemirror",
+  "authors": {
+    "name": "Luhur Abdi Rizal (el7cosmos)",
+    "homepage": "https://www.drupal.org/u/el7cosmos",
+    "role": "Maintainer"
+  },
   "minimum-stability": "dev",
   "support": {
     "issues": "https://www.drupal.org/project/issues/devel_codemirror",
     "source": "http://cgit.drupalcode.org/devel_codemirror"
   },
   "require": {
-    "drupal/devel": "^1.2"
+    "drupal/devel": "^1.0"
   }
 }

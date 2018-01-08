@@ -112,7 +112,7 @@ class DevelCodemirrorSettingsForm extends ConfigFormBase {
       '#title' => $this->t('Theme'),
       '#description' => $this->t('The theme to style the editor with.'),
       '#options' => self::THEMES,
-      '#required' => TRUE,
+      '#empty_value' => 'default',
       '#default_value' => $config->get('theme'),
     ];
     $form['lineWrapping'] = [

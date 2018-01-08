@@ -1,7 +1,10 @@
 name: Devel Codemirror
 type: module
 description: Enable Codemirror text editor for devel/php
-core: 8.x
 package: Development
+core: 8.x
+configure: devel_codemirror.settings
+tags:
+  - developer
 dependencies:
   - devel:devel
