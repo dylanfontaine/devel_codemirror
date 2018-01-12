@@ -1,7 +1,7 @@
 {
   "name": "drupal/devel_codemirror",
   "type": "drupal-module",
-  "description": "Devel codemirror",
+  "description": "Enable Codemirror text editor for devel/php",
   "keywords": ["Drupal"],
   "license": "GPL-2.0+",
   "homepage": "https://www.drupal.org/project/devel_codemirror",
