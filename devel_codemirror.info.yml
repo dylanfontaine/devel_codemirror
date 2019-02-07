@@ -7,4 +7,4 @@ configure: devel_codemirror.settings
 tags:
   - developer
 dependencies:
-  - devel:devel
+  - devel_php:devel_php
