@@ -21,7 +21,7 @@ The Devel Codemirror module turn the textarea in devel php form into code editor
 
 This module requires the following modules:
 
- * [Devel](https://drupal.org/project/devel)
+ * [Devel PHP](https://www.drupal.org/project/devel_php)
 
 ## INSTALLATION
  
@@ -52,4 +52,4 @@ Current maintainers:
  * [Luhur Abdi Rizal (el7cosmos)](https://www.drupal.org/u/el7cosmos)
 
 ### This project has been sponsored by:
- * [PT. Sepulsa Teknologi Indonesia](https://www.drupal.org/pt-sepulsa-teknologi-indonesia)
+ * [Alterra](https://www.drupal.org/alterra)
