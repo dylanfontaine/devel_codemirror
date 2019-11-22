@@ -17,6 +17,7 @@ function devel_codemirror_menu()
     'menu_name' => 'devel',
     'page callback' => 'drupal_get_form',
     'page arguments' => ['devel_codemirror_settings_form'],
+    'file' => 'devel_codemirror.admin.inc',
   ];
 
   return $routes;
