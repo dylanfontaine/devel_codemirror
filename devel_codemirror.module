@@ -8,8 +8,7 @@
 /**
  * Implements hook_menu().
  */
-function devel_codemirror_menu()
-{
+function devel_codemirror_menu() {
   $routes['admin/config/development/devel/codmirror'] = [
     'title' => 'Devel Codemirror settings',
     'description' => 'Access Codemirror settings for the execute php page',
@@ -26,8 +25,7 @@ function devel_codemirror_menu()
 /**
  * Implements hook_form_FORM_ID_alter().
  */
-function devel_codemirror_form_devel_execute_form_alter(array &$form, array &$form_state)
-{
+function devel_codemirror_form_devel_execute_form_alter(array &$form, array &$form_state) {
   $config = variable_get('devel_codemirror_settings', []);
 
   $path = drupal_get_path('module', 'devel_codemirror');
