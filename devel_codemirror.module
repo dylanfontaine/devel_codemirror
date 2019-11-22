@@ -5,8 +5,6 @@
  * Contains devel_codemirror.module.
  */
 
-use Drupal\devel_codemirror\Form\DevelCodemirrorSettingsForm;
-
 /**
  * Implements hook_menu().
  */
@@ -25,51 +23,40 @@ function devel_codemirror_menu()
 }
 
 /**
- * Callback for devel codemirror settings form.
- */
-function devel_codemirror_settings_form(array $form, array &$form_state): array
-{
-  return DevelCodemirrorSettingsForm::buildForm($form, $form_state);
-}
-
-/**
  * Implements hook_form_FORM_ID_alter().
  */
-function devel_codemirror_form_devel_execute_form_alter(&$form)
+function devel_codemirror_form_devel_execute_form_alter(array &$form, array &$form_state)
 {
-  $config = variable_get('devel_codemirror.settings', []);
+  $config = variable_get('devel_codemirror_settings', []);
 
   $path = drupal_get_path('module', 'devel_codemirror');
-
-  $config['theme'];
 
   $form['#attached']['js'][] = $path . '/codemirror/lib/codemirror.js';
   $form['#attached']['js'][] = $path . '/codemirror/mode/clike/clike.js';
   $form['#attached']['js'][] = $path . '/codemirror/mode/php/php.js';
   $form['#attached']['js'][] = $path . '/js/devel_codemirror.js';
-  $form['#attached']['js'][] = $path . 'devel_codemirror/devel';
+  $form['#attached']['js'][] = $path . '/devel_codemirror/devel';
   $form['#attached']['css'][] = $path . '/codemirror/lib/codemirror.css';
 
-  if ($config['theme'] != 'default') {
-    $form['#attached']['css'][] = $path . 'codemirror/theme/' . $config['theme'] . '.css';
+  if (($config['theme'] ?? 'default') !== 'default') {
+    $form['#attached']['css'][] = $path . '/codemirror/theme/' . $config['theme'] . '.css';
   }
 
-  if ($config['matchBrackets']) {
-    $form['#attached']['js'][] = $path . 'codemirror/addon/edit/matchbrackets.js';
+  if (!empty($config['matchBrackets'])) {
+    $form['#attached']['js'][] = $path . '/codemirror/addon/edit/matchbrackets.js';
   }
-  if ($config['autoCloseBrackets']) {
-    $form['#attached']['js'][] = $path . 'codemirror/addon/edit/closebrackets.js';
+  if (!empty($config['autoCloseBrackets'])) {
+    $form['#attached']['js'][] = $path . '/codemirror/addon/edit/closebrackets.js';
   }
-  if ($config['styleActiveLine']) {
-    $form['#attached']['js'][] = $path . 'codemirror/addon/selection/active-line.js';
+  if (!empty($config['styleActiveLine'])) {
+    $form['#attached']['js'][] = $path . '/codemirror/addon/selection/active-line.js';
   }
-
 
   $form['#attached']['js'][] = [
     'data' => [
       'devel' => [
-        'codemirror' => $config
-      ]
+        'codemirror' => $config,
+      ],
     ],
     'type' => 'setting',
   ];

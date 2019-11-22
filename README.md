@@ -1,11 +1,11 @@
 ## CONTENTS OF THIS FILE
-   
+
  * Introduction
  * Requirements
  * Installation
  * Configuration
  * Maintainers
- 
+
 ## INTRODUCTION
 
 The Devel Codemirror module turn the textarea in devel php form into code editor
@@ -21,12 +21,12 @@ The Devel Codemirror module turn the textarea in devel php form into code editor
 
 This module requires the following modules:
 
- * [Devel PHP](https://www.drupal.org/project/devel_php)
+ * [Devel](https://www.drupal.org/project/devel)
 
 ## INSTALLATION
- 
+
  * Install as you would normally install a contributed Drupal module. Visit:
-   [https://www.drupal.org/docs/8/extending-drupal-8/installing-drupal-8-modules]
+   [https://www.https://www.drupal.org/docs/develop/using-composer/using-composer-to-install-drupal-and-manage-dependencies#adding-modules]
    for further information.
 
  * If you using composer to manage dependencies of your site:
@@ -34,7 +34,7 @@ This module requires the following modules:
 
 ## CONFIGURATION
 
-Configure the codemirror settings in Administration » Configuration » 
+Configure the codemirror settings in Administration » Configuration »
  Development » Devel settings » Codemirror.
 
 ### Supported configuration and addons

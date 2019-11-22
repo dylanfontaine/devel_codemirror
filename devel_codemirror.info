@@ -3,5 +3,4 @@ description = Enable Codemirror text editor for devel/php
 package = Development
 core = 7.x
 
-dependencies = "devel_php"
-dependencies = "xautoload"
+dependencies = "devel"
