@@ -2,16 +2,11 @@
 
 namespace Drupal\devel_codemirror\Form;
 
-use Drupal\Core\Cache\CacheCollectorInterface;
-use Drupal\Core\Config\ConfigFactoryInterface;
-use Drupal\Core\Form\ConfigFormBase;
-use Drupal\Core\Form\FormStateInterface;
-use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
  * Class DevelCodemirrorSettingsForm.
  */
-class DevelCodemirrorSettingsForm extends ConfigFormBase {
+class DevelCodemirrorSettingsForm {
 
   const THEMES = [
     '3024-day' => '3024 day',
@@ -64,111 +59,63 @@ class DevelCodemirrorSettingsForm extends ConfigFormBase {
     'zenburn' => 'Zenburn',
   ];
 
-  /**
-   * The cache collector service.
-   *
-   * @var \Drupal\Core\Cache\CacheCollectorInterface
-   */
-  protected $cacheCollector;
-
-  /**
-   * Constructs a DevelCodemirrorSettingsForm object.
-   *
-   * @param \Drupal\Core\Config\ConfigFactoryInterface $config_factory
-   *   The factory for configuration objects.
-   * @param \Drupal\Core\Cache\CacheCollectorInterface $cache_collector
-   *   The cache collector service.
-   */
-  public function __construct(ConfigFactoryInterface $config_factory, CacheCollectorInterface $cache_collector) {
-    parent::__construct($config_factory);
-
-    $this->cacheCollector = $cache_collector;
-  }
 
   /**
    * {@inheritdoc}
    */
-  public static function create(ContainerInterface $container) {
-    return new static(
-      $container->get('config.factory'),
-      $container->get('library.discovery.collector')
-    );
-  }
-
-  /**
-   * {@inheritdoc}
-   */
-  public function getFormId() {
+  public static function getFormId() {
     return 'devel_codemirror_settings_form';
   }
 
   /**
    * {@inheritdoc}
    */
-  public function buildForm(array $form, FormStateInterface $form_state) {
-    $config = $this->config('devel_codemirror.settings');
-    $form['theme'] = [
+  public static function buildForm(array $form, array &$form_state) {
+    $config = variable_get('devel_codemirror_settings', []);
+
+    $form['devel_codemirror_settings'] = [
+      '#tree' => TRUE,
+    ];
+
+    $form['devel_codemirror_settings']['theme'] = [
       '#type' => 'select',
-      '#title' => $this->t('Theme'),
-      '#description' => $this->t('The theme to style the editor with.'),
+      '#title' => t('Theme'),
+      '#description' => t('The theme to style the editor with.'),
       '#options' => self::THEMES,
       '#empty_value' => 'default',
-      '#default_value' => $config->get('theme'),
+      '#default_value' => $config['theme'] ?? 'default',
     ];
-    $form['lineWrapping'] = [
+    $form['devel_codemirror_settings']['lineWrapping'] = [
       '#type' => 'checkbox',
-      '#title' => $this->t('Line wrapping'),
-      '#description' => $this->t('Whether CodeMirror should scroll or wrap for long lines.'),
-      '#default_value' => $config->get('lineWrapping'),
+      '#title' => t('Line wrapping'),
+      '#description' => t('Whether CodeMirror should scroll or wrap for long lines.'),
+      '#default_value' => $config['lineWrapping'] ?? FALSE,
     ];
-    $form['lineNumbers'] = [
+    $form['devel_codemirror_settings']['lineNumbers'] = [
       '#type' => 'checkbox',
-      '#title' => $this->t('Line number'),
-      '#description' => $this->t('Whether to show line numbers to the left of the editor.'),
-      '#default_value' => $config->get('lineNumbers'),
+      '#title' => t('Line number'),
+      '#description' => t('Whether to show line numbers to the left of the editor.'),
+      '#default_value' => $config['lineNumbers'] ?? FALSE,
     ];
-    $form['matchBrackets'] = [
+    $form['devel_codemirror_settings']['matchBrackets'] = [
       '#type' => 'checkbox',
-      '#title' => $this->t('Match brackets'),
-      '#description' => $this->t('When set to true or, causes matching brackets to be highlighted whenever the cursor is next to them.'),
-      '#default_value' => $config->get('matchBrackets'),
+      '#title' => t('Match brackets'),
+      '#description' => t('When set to true or, causes matching brackets to be highlighted whenever the cursor is next to them.'),
+      '#default_value' => $config['matchBrackets'] ?? FALSE,
     ];
-    $form['autoCloseBrackets'] = [
+    $form['devel_codemirror_settings']['autoCloseBrackets'] = [
       '#type' => 'checkbox',
-      '#title' => $this->t('Auto close brackets'),
-      '#description' => $this->t('Auto-close brackets and quotes when typed.'),
-      '#default_value' => $config->get('autoCloseBrackets'),
+      '#title' => t('Auto close brackets'),
+      '#description' => t('Auto-close brackets and quotes when typed.'),
+      '#default_value' => $config['autoCloseBrackets'] ?? FALSE,
     ];
-    $form['styleActiveLine'] = [
+    $form['devel_codemirror_settings']['styleActiveLine'] = [
       '#type' => 'checkbox',
-      '#title' => $this->t('Style active line'),
-      '#default_value' => $config->get('styleActiveLine'),
+      '#title' => t('Style active line'),
+      '#default_value' => $config['styleActiveLine'] ?? FALSE,
     ];
-    return parent::buildForm($form, $form_state);
-  }
 
-  /**
-   * {@inheritdoc}
-   */
-  public function submitForm(array &$form, FormStateInterface $form_state) {
-    parent::submitForm($form, $form_state);
-
-    $form_state->cleanValues();
-
-    $this->config('devel_codemirror.settings')
-      ->setData($form_state->getValues())
-      ->save();
-
-    $this->cacheCollector->clear();
-  }
-
-  /**
-   * {@inheritdoc}
-   */
-  protected function getEditableConfigNames() {
-    return [
-      'devel_codemirror.settings',
-    ];
+    return system_settings_form($form);
   }
 
 }
