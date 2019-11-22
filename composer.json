@@ -1,5 +1,5 @@
 {
-  "name": "drupal/devel_codemirror",
+  "name": "dylanfontaine/devel_codemirror",
   "type": "drupal-module",
   "description": "Enable Codemirror text editor for devel/php",
   "keywords": [
