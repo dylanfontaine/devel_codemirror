@@ -12,6 +12,11 @@
       "name": "Luhur Abdi Rizal (el7cosmos)",
       "homepage": "https://www.drupal.org/u/el7cosmos",
       "role": "Maintainer"
+    },
+    {
+      "name": "Dylan Fontaine (dylanf)",
+      "homepage": "https://www.drupal.org/u/dylanf",
+      "role": "Contributor"
     }
   ],
   "minimum-stability": "dev",
